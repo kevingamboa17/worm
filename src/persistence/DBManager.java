@@ -1,9 +1,9 @@
-package Persistence;
+package persistence;
 
 import java.util.HashMap;
 
 public interface DBManager {
-    public void save(String tableName,HashMap<String, String> values);
+    void save(String tableName,HashMap<String, String> values);
     void update();
     void create();
     void delete(String tableName,int id);

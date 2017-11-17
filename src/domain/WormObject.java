@@ -21,4 +21,8 @@ public class WormObject {
     public <T>T[] getAll(){
         return null;
     }
+
+    public void setObjectID(int objectID) {
+        this.objectID = objectID;
+    }
 }

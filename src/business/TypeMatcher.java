@@ -11,25 +11,33 @@ public class TypeMatcher {
 
     public FieldWormType[] getFieldWormTypes(Object object) {
         Field[] objectFields = object.getClass().getDeclaredFields();
-        FieldWormType[] fieldWormTypes = new FieldWormType[objectFields.length];
+        FieldWormType[] fieldWormTypes = new FieldWormType[objectFields.length + 1];
 
         for (int i = 0; i < objectFields.length; i++) {
-            String fieldName = objectFields[i].getName();
-            Object fieldValue = getFieldValue(object, objectFields[i]);
-            Annotation fieldAnnotation = getAnnotation(objectFields[i]);
-            Type fieldType = objectFields[i].getType();
-            int acceptedTypeCode = getAcceptedTypeCode(fieldType);
+            fieldWormTypes[i] = bindField(object, objectFields[i]);
+        }
 
-            fieldWormTypes[i] = new FieldWormType(
+        // The last on will be the fieldId
+        fieldWormTypes[fieldWormTypes.length-1] = bindField(object, getFieldId(object));
+
+        return fieldWormTypes;
+    }
+
+    private FieldWormType bindField(Object object, Field objectField) {
+        objectField.setAccessible(true);
+        String fieldName = objectField.getName();
+        Object fieldValue = getFieldValue(object, objectField);
+        Annotation fieldAnnotation = getAnnotation(objectField);
+        Type fieldType = objectField.getType();
+        int acceptedTypeCode = getAcceptedTypeCode(fieldType);
+
+        return new FieldWormType(
                 fieldName,
                 fieldValue,
                 fieldAnnotation,
                 fieldType,
                 acceptedTypeCode
-            );
-        }
-
-        return fieldWormTypes;
+        );
     }
 
     private int getAcceptedTypeCode(Type fieldType) {
@@ -93,5 +101,15 @@ public class TypeMatcher {
         } else {
             return null;
         }
+    }
+
+    private Field getFieldId(Object object) {
+        Field idField = null;
+        try {
+            idField = object.getClass().getSuperclass().getDeclaredField("objectID");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return idField;
     }
 }

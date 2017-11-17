@@ -1,6 +1,8 @@
 package domain;
 
 public class WormObject {
+    private int objectID;
+
     public WormObject() {
     }
 

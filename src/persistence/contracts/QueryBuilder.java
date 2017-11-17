@@ -1,6 +1,6 @@
 package persistence.contracts;
 
-import java.util.HashMap;
+import domain.FieldWormType;
 
 public interface QueryBuilder {
 
@@ -13,8 +13,8 @@ public interface QueryBuilder {
     interface CRUD {
         String createDB(String dataBaseName);
         String createTable(String tableName, String[] attributesNames);
-        String insertEntity(String tableName, HashMap<String, String> attributes);
-        String updateEntity(String tableName, HashMap<String, String> attributes);
+        String insertEntity(String tableName, FieldWormType attributes);
+        String updateEntity(String tableName, FieldWormType attributes);
         String deleteEntity(String tableName, int id);
         String findEntity(String tableName, int id);
         String allEntities(String tableName);

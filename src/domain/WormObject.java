@@ -27,4 +27,8 @@ public class WormObject {
     public <T>T[] getAll(){
         return (T[]) this.mBusinessManager.getAll(this.getClass());
     }
+
+    public void setObjectID(int objectID) {
+        this.objectID = objectID;
+    }
 }

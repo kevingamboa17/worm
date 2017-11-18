@@ -1,5 +1,7 @@
 import business.ObjectBuilder;
+import business.TypeMatcher;
 import domain.FieldWormType;
+import persistence.contracts.QueryBuilder;
 
 import java.util.Date;
 
@@ -8,7 +10,9 @@ public class DummyTests {
 
 
     public static void main(String[] args) {
-        tryIntrospection();
+        //tryIntrospection();
+        //tryReflexion();
+        tryQueryBuilder();
     }
 
     private static void tryIntrospection() {
@@ -23,5 +27,27 @@ public class DummyTests {
 
         Dog hey = (Dog)objectBuilder.buildObject(Dog.class, fieldWormTypes);
         System.out.println(hey);
+
+
+
+    }
+
+    private static void tryReflexion() {
+        ObjectBuilder objectBuilder = new ObjectBuilder();
+        TypeMatcher typeMatcher = new TypeMatcher();
+        Dog dog2 = new Dog("Carlos", "Santa", 2, new Date());
+        dog2.setObjectID(5);
+        Dog dog1 = (Dog)objectBuilder.buildObject(Dog.class, typeMatcher.getFieldWormTypes(dog2));
+        System.out.println(dog1);
+    }
+
+    private static void tryQueryBuilder(){
+        persistence.QueryBuilder query = new persistence.QueryBuilder();
+        TypeMatcher matcher = new TypeMatcher();
+        Dog dog2 = new Dog("Carlos", "Santa", 2, new Date());
+
+
+        String query2 = query.allEntities("perrosTable");
+        System.out.println(query2);
     }
 }

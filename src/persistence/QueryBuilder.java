@@ -2,7 +2,7 @@ package persistence;
 
 import domain.FieldWormType;
 
-public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD {
+public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, persistence.contracts.QueryBuilder.Validator {
 
     private final String CREATE = "CREATE";
     private final String SELECT = "SELECT";
@@ -13,6 +13,7 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD {
     private final String VALUES = "VALUES";
     private final String WHERE = "WHERE";
     private final String SET = "SET";
+    private final String AND = "AND";
 
 
 
@@ -41,6 +42,8 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD {
 
         return query.toString();
     }
+
+
 
     @Override
     public String insertEntity(String tableName, FieldWormType[] attributes) {
@@ -186,4 +189,73 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD {
     }
 
 
+
+    @Override
+    public String getTableFieldsNamesAndTypes(String DBName, String tableName) {
+        StringBuilder query = new StringBuilder("");
+
+        query
+                .append(SELECT)
+                .append(" DATA_TYPE ")
+                .append(FROM)
+                .append(" INFORMATION_SCHEMA.COLUMNS ")
+                .append(WHERE)
+                .append(" TABLE_SCHEMA = ")
+                .append("'")
+                .append(DBName)
+                .append("'")
+                .append(AND)
+                .append(" table_name = ")
+                .append("'")
+                .append(tableName)
+                .append("'");
+
+        return query.toString();
+    }
+
+    @Override
+    public String existTable(String DBName, String tableName) {
+        StringBuilder query = new StringBuilder("");
+
+        query
+                .append(SELECT)
+                .append(" table_name ")
+                .append(FROM)
+                .append(" information_schema.tables ")
+                .append(WHERE)
+                .append(" table_schema = ")
+                .append("'")
+                .append(DBName)
+                .append("'")
+                .append(AND)
+                .append(" table_name = ")
+                .append("'")
+                .append(tableName)
+                .append("'");
+
+
+        return query.toString();
+    }
+
+    @Override
+    public String existRow(String tableName, String idFieldName, int id) {
+        StringBuilder query = new StringBuilder("");
+
+        query
+                .append(SELECT)
+                .append(" * ")
+                .append(FROM)
+                .append(" ")
+                .append(tableName)
+                .append(" ")
+                .append(WHERE)
+                .append(" ")
+                .append(tableName)
+                .append(".")
+                .append(idFieldName)
+                .append("=")
+                .append(id);
+
+        return query.toString();
+    }
 }

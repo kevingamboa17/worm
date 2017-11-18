@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class BDExecuteQuery implements persistence.contracts.BDExecuteQuery {
+public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
     @Override
     public ResultSet rowExist(String query) {
         DBConnection dbConnection= new DBConnection();

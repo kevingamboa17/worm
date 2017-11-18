@@ -2,7 +2,7 @@ package persistence.contracts;
 
 import java.sql.ResultSet;
 
-public interface BDExecuteQuery {
+public interface DBExecuteQuery {
     ResultSet rowExist(String query);
     ResultSet tableAttributes(String query);
     ResultSet tableExist(String query);

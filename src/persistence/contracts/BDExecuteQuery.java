@@ -9,8 +9,8 @@ public interface BDExecuteQuery {
     void insertEntity(String query);
     void updateEntity(String query);
     void deleteEntity(String query);
-    void findEntity(String query);
-    void allEntities(String query);
+    ResultSet findEntity(String query);
+    ResultSet allEntities(String query);
     void createDB(String query);
     void createTable(String query);
 }

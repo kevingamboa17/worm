@@ -94,29 +94,35 @@ public class BDExecuteQuery implements persistence.contracts.BDExecuteQuery {
     }
 
     @Override
-    public void findEntity(String query) {
+    public ResultSet findEntity(String query) {
         DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
             dbConnection.closeConnection(connection);
+
+            return resultSet;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public void allEntities(String query) {
+    public ResultSet allEntities(String query) {
         DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
             dbConnection.closeConnection(connection);
+
+            return resultSet;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override

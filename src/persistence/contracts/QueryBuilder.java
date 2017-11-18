@@ -13,10 +13,10 @@ public interface QueryBuilder {
     interface CRUD {
         String createDB(String dataBaseName);
         String createTable(String tableName, String[] attributesNames);
-        String insertEntity(String tableName, FieldWormType attributes);
-        String updateEntity(String tableName, FieldWormType attributes);
-        String deleteEntity(String tableName, int id);
-        String findEntity(String tableName, int id);
+        String insertEntity(String tableName, FieldWormType[] attributes);
+        String updateEntity(String tableName, FieldWormType[] attributes);
+        String deleteEntity(String tableName, String idFieldName, int id);
+        String findEntity(String tableName, String idFieldName, int id);
         String allEntities(String tableName);
     }
 }

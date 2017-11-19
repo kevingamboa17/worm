@@ -5,9 +5,9 @@ import domain.FieldWormType;
 public interface QueryBuilder {
 
     interface Validator {
-        String getTableFieldsNames(String tableName);
-        String existTable(String tableName);
-        String existRow(String tableName, int id);
+        String getTableFieldsNamesAndTypes(String DBName, String tableName);
+        String existTable(String DBName, String tableName);
+        String existRow(String tableName, String idFieldName, int id);
     }
 
     interface CRUD {

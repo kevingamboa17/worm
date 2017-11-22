@@ -118,9 +118,9 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD {
             .append(" ")
             .append(tableName)
             .append(".")
-            .append(attributes[attributes.length-1].getFieldName()) //objectId
+            .append(attributes[0].getFieldName()) //objectId
             .append("=")
-            .append(attributes[attributes.length-1].getValue());
+            .append(attributes[0].getValue());
 
         return query.toString();
     }

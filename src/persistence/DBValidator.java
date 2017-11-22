@@ -7,9 +7,14 @@ import java.sql.SQLException;
 
 public class DBValidator implements persistence.contracts.DBValidator{
 
+    private DBExecuteQuery dbExecuteQuery;
+
+    public void BDValidator(DBExecuteQuery dbExecuteQuery){
+        this.dbExecuteQuery = dbExecuteQuery;
+    }
+
     @Override
     public boolean validateTableExist(String DBName, String tableName) {
-        DBExecuteQuery dbExecuteQuery = new DBExecuteQuery();
         ResultSet resultSet = dbExecuteQuery.tableExist(new QueryBuilder().existTable(DBName, tableName));
 
         try {
@@ -24,7 +29,6 @@ public class DBValidator implements persistence.contracts.DBValidator{
 
     @Override
     public boolean validateRowExist(String tableName, String idFieldName, int id) {
-        DBExecuteQuery dbExecuteQuery = new DBExecuteQuery();
         ResultSet resultSet = dbExecuteQuery.rowExist(new QueryBuilder().existRow(tableName,idFieldName,id));
 
         try {
@@ -39,7 +43,6 @@ public class DBValidator implements persistence.contracts.DBValidator{
 
     @Override
     public boolean validateTableAttributes(String DBName, String tableName, FieldWormType[] attributesNames) {
-        DBExecuteQuery dbExecuteQuery = new DBExecuteQuery();
         ResultSet resultSet = dbExecuteQuery.tableAttributes(new QueryBuilder().getTableFieldsNamesAndTypes(DBName, tableName));
 
         int i=0;

@@ -13,12 +13,13 @@ public class TypeMatcher {
         Field[] objectFields = object.getClass().getDeclaredFields();
         FieldWormType[] fieldWormTypes = new FieldWormType[objectFields.length + 1];
 
-        for (int i = 0; i < objectFields.length; i++) {
-            fieldWormTypes[i] = bindField(object, objectFields[i]);
+        // The first one will be the id
+        fieldWormTypes[0] = bindField(object, getFieldId(object));
+
+        for (int i = 1; i < fieldWormTypes.length; i++) {
+            fieldWormTypes[i] = bindField(object, objectFields[i-1]);
         }
 
-        // The last on will be the fieldId
-        fieldWormTypes[fieldWormTypes.length-1] = bindField(object, getFieldId(object));
 
         return fieldWormTypes;
     }

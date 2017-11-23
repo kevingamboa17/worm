@@ -7,13 +7,15 @@ import java.sql.Connection;
 public class DBConnection implements persistence.contracts.DBConnection{
     private final PoolConnections poolConnections;
 
-    public DBConnection() {
-        poolConnections = new DefaultConnection();
-    }
-
     public DBConnection(PoolConnections poolConnections) {
-        this.poolConnections = poolConnections;
-        poolConnections.configurePool();
+
+        if (poolConnections != null) {
+            this.poolConnections = poolConnections;
+        } else {
+            this.poolConnections = new DefaultConnection();
+        }
+
+        this.poolConnections.configurePool();
     }
 
     @Override

@@ -17,7 +17,7 @@ public class BusinessManager implements business.contracts.BusinessManager {
 
     @Override
     public void save(WormObject wormObject) {
-        FieldWormType[] fieldWormTypes = this.typeMatcher.getFieldWormTypes(wormObject.getClass());
+        FieldWormType[] fieldWormTypes = this.typeMatcher.getFieldWormTypes(wormObject);
         this.mDBManager.save(wormObject.getClass().getName(), fieldWormTypes);
     }
 

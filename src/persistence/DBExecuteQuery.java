@@ -1,5 +1,7 @@
 package persistence;
 
+import persistence.contracts.DBConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +11,7 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     private DBConnection dbConnection;
 
-    public void DBExecuteQuery(DBConnection dbConnection){
+    public DBExecuteQuery(persistence.contracts.DBConnection dbConnection){
         this.dbConnection = dbConnection;
     }
 

@@ -6,15 +6,27 @@ public class WormConfig {
     private static WormConfig wormConfig;
     private PoolConnections poolConnections;
     private final String dbName;
+    private final String host;
+    private final String port;
+    private final String user;
+    private final String password;
 
-    public WormConfig(String dbName, PoolConnections poolConnections){
+    public WormConfig(String dbName, String host, String port, String user, String password, PoolConnections poolConnections) {
         this.poolConnections = poolConnections;
         this.dbName = dbName;
+        this.host = host;
+        this.port = port;
+        this.user = user;
+        this.password = password;
         wormConfig = this;
-    };
+    }
 
-    public WormConfig(String dbName) {
+    public WormConfig(String dbName, String host, String port, String user, String password) {
         this.dbName = dbName;
+        this.host = host;
+        this.port = port;
+        this.user = user;
+        this.password = password;
         wormConfig = this;
     }
 
@@ -36,6 +48,22 @@ public class WormConfig {
 
     public String getDbName() {
         return dbName;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
 

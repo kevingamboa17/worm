@@ -9,7 +9,11 @@ import java.sql.Connection;
 import java.util.Date;
 
 public class DummyTests {
-
+    private static final String HOST = "localhost";
+    private static final String PORT = "";
+    private static final String DATABASE = "wormDB";
+    private static final String USER = "";
+    private static final String PASSW = "";
 
 
     public static void main(String[] args) {
@@ -21,14 +25,14 @@ public class DummyTests {
     }
 
     private static void trySave() {
-        new WormConfig("wormDB");
+        new WormConfig("wormDB", HOST, PORT, USER, PASSW);
         Dog dog1 = new Dog("Carlos2", "Santana2", 2, new Date());
         dog1.setObjectID(2);
         dog1.save();
     }
 
     private static void tryWormConfig() {
-        WormConfig wormConfig1 = new WormConfig("wormDB" ,new PoolConnections() {
+        WormConfig wormConfig1 = new WormConfig("wormDB", HOST, PORT, USER, PASSW ,new PoolConnections() {
             @Override
             public Connection getConnection() {
                 return null;

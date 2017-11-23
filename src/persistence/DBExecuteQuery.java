@@ -21,7 +21,7 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
-            dbConnection.closeConnection(connection);
+
 
             return resultSet;
         } catch (SQLException e) {
@@ -36,7 +36,7 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate();
-            dbConnection.closeConnection(connection);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

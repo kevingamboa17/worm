@@ -7,6 +7,6 @@ public interface DBManager {
     void update(String tableName, FieldWormType[] values);
     void create(String tableName, FieldWormType[] values);
     void delete(String tableName,int id);
-    FieldWormType[] getObject(String tableName, int id);
-    FieldWormType[][] getAll(String tableName);
+    FieldWormType[] getObject(Class type, String tableName, int id);
+    FieldWormType[][] getAll(Class type, String tableName);
 }

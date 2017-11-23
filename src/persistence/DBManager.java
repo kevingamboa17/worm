@@ -1,10 +1,13 @@
 package persistence;
 
+import business.TypeMatcher;
 import domain.FieldWormType;
 import domain.WormConfig;
 import persistence.contracts.DBConnection;
 import persistence.contracts.DBExecuteQuery;
 import persistence.contracts.DBValidator;
+
+import java.sql.ResultSet;
 
 public class DBManager implements persistence.contracts.DBManager {
     private final DBValidator dbValidator;
@@ -12,6 +15,7 @@ public class DBManager implements persistence.contracts.DBManager {
     private final DBConnection dbConnection;
     private final QueryBuilder queryBuilder;
     private final String dbName;
+    private final TypeMatcher typeMatcher;
 
 
     public DBManager() {
@@ -23,6 +27,7 @@ public class DBManager implements persistence.contracts.DBManager {
         dbExecuteQuery = new persistence.DBExecuteQuery(dbConnection);
         dbValidator = new persistence.DBValidator(dbExecuteQuery);
         queryBuilder = new QueryBuilder();
+        typeMatcher = new TypeMatcher();
     }
 
     @Override
@@ -61,14 +66,12 @@ public class DBManager implements persistence.contracts.DBManager {
     }
 
     @Override
-    public FieldWormType[] getObject(String tableName, int id) {
-        // TODO: Check what is the data the DBquery return
-        return new FieldWormType[0];
+    public FieldWormType[] getObject(Class type, String tableName, int id) {
+        return typeMatcher.convertToArrayFieldWormType(type, null);
     }
 
     @Override
-    public FieldWormType[][] getAll(String tableName) {
-        // TODO: Check what is the data the DBquery return
-        return new FieldWormType[0][];
+    public FieldWormType[][] getAll(Class type, String tableName) {
+        return typeMatcher.convertToMatrixFieldWormType(type, null);
     }
 }

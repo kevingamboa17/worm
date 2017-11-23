@@ -28,14 +28,14 @@ public class BusinessManager implements business.contracts.BusinessManager {
 
     @Override
     public WormObject findById(Class type, int id) {
-        FieldWormType[] fieldWormTypes = this.mDBManager.getObject(type.getName(), id);
+        FieldWormType[] fieldWormTypes = this.mDBManager.getObject(type, type.getName(), id);
         return this.objectBuilder.buildObject(type.getClass(), fieldWormTypes);
     }
 
     @Override
     public WormObject[] getAll(Class type) {
         WormObject[] wormObjects;
-        FieldWormType[][] fieldWormTypes = this.mDBManager.getAll(type.getName());
+        FieldWormType[][] fieldWormTypes = this.mDBManager.getAll(type, type.getName());
         wormObjects = new WormObject[fieldWormTypes.length];
 
         for(int i = 0; i < fieldWormTypes.length; i++){

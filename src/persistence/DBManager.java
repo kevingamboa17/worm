@@ -7,7 +7,6 @@ import persistence.contracts.DBConnection;
 import persistence.contracts.DBExecuteQuery;
 import persistence.contracts.DBValidator;
 
-import java.sql.ResultSet;
 
 public class DBManager implements persistence.contracts.DBManager {
     private final DBValidator dbValidator;
@@ -21,9 +20,19 @@ public class DBManager implements persistence.contracts.DBManager {
     public DBManager() {
         WormConfig wormConfig = WormConfig.newInstance();
         this.dbName = wormConfig.getDbName();
-        dbConnection = new persistence.DBConnection(
-                wormConfig.getPoolConnections()
-        );
+
+        dbConnection = wormConfig.getPoolConnections() == null?
+                new persistence.DBConnection(
+                        wormConfig.getDbName(),
+                        wormConfig.getHost(),
+                        wormConfig.getPort(),
+                        wormConfig.getUser(),
+                        wormConfig.getPassword()
+                ) :
+                new persistence.DBConnection(
+                    wormConfig.getPoolConnections()
+                );
+
         dbExecuteQuery = new persistence.DBExecuteQuery(dbConnection);
         dbValidator = new persistence.DBValidator(dbExecuteQuery);
         queryBuilder = new QueryBuilder();
@@ -42,14 +51,14 @@ public class DBManager implements persistence.contracts.DBManager {
 
     @Override
     public void update(String tableName, FieldWormType[] values) {
-        dbExecuteQuery.updateEntity(
+        dbExecuteQuery.executeModificationQuery(
                 queryBuilder.updateEntity(tableName, values)
         );
     }
 
     @Override
     public void create(String tableName, FieldWormType[] values) {
-        dbExecuteQuery.insertEntity(
+        dbExecuteQuery.executeModificationQuery(
                 queryBuilder.insertEntity(tableName, values)
         );
     }
@@ -60,7 +69,7 @@ public class DBManager implements persistence.contracts.DBManager {
         // TODO: Correct this hardcoded name
         String fieldIdName = "objectID";
 
-        dbExecuteQuery.deleteEntity(
+        dbExecuteQuery.executeModificationQuery(
                 queryBuilder.deleteEntity(tableName, fieldIdName, id)
         );
     }

@@ -8,13 +8,22 @@ import java.sql.SQLException;
 
 public class DefaultConnection implements PoolConnections {
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private final String HOST = "localhost";
-    private final String PORT = "5432";
-    private final String DATABASE = "wormDB";
-    private final String USER = "username";
-    private final String PASSW = "password";
+    private final String HOST;
+    private final String PORT;
+    private final String DATABASE;
+    private final String USER;
+    private final String PASSW;
 
-    private final String DATABASE_URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
+    private final String DATABASE_URL;
+
+    public DefaultConnection(String DATABASE, String HOST, String PORT, String USER, String PASSW) {
+        this.HOST = HOST;
+        this.PORT = PORT;
+        this.DATABASE = DATABASE;
+        this.USER = USER;
+        this.PASSW = PASSW;
+        this.DATABASE_URL = "jdbc:mysql://" + this.HOST + ":" + this.PORT + "/" + this.DATABASE;
+    }
 
     @Override
     public Connection getConnection() {

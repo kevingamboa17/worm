@@ -13,8 +13,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
         this.dbExecuteQuery = dbExecuteQuery;
     }
 
-    @Override
-    public boolean validateTableExist(String DBName, String tableName) {
+    private boolean validateTableExist(String DBName, String tableName) {
         ResultSet resultSet = dbExecuteQuery.tableExist(new QueryBuilder().existTable(DBName, tableName));
 
         try {
@@ -41,8 +40,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
         return false;
     }
 
-    @Override
-    public boolean validateTableAttributes(String DBName, String tableName, FieldWormType[] attributesNames) {
+    private boolean validateTableAttributes(String DBName, String tableName, FieldWormType[] attributesNames) {
         ResultSet resultSet = dbExecuteQuery.tableAttributes(new QueryBuilder().getTableFieldsNamesAndTypes(DBName, tableName));
 
         int i=0;
@@ -60,5 +58,14 @@ public class DBValidator implements persistence.contracts.DBValidator{
         }
         return true;
     }
-    
+
+    @Override
+    public boolean isDBValid(String dbName, String tableName, FieldWormType[] attributes) {
+        return  validateTableExist(dbName, tableName ) &&
+                validateTableAttributes(
+                        tableName,
+                        dbName,
+                        attributes
+                );
+    }
 }

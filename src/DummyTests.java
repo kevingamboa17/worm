@@ -20,7 +20,7 @@ public class DummyTests {
     }
 
     private static void tryWormConfig() {
-        WormConfig wormConfig1 = new WormConfig(new PoolConnections() {
+        WormConfig wormConfig1 = new WormConfig("wormDB" ,new PoolConnections() {
             @Override
             public Connection getConnection() {
                 return null;

@@ -5,7 +5,10 @@ import domain.FieldWormType;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
+import java.util.List;
 
 public class TypeMatcher {
 
@@ -22,6 +25,75 @@ public class TypeMatcher {
 
 
         return fieldWormTypes;
+    }
+
+    public FieldWormType[] convertToArrayFieldWormType(Class type, ResultSet resultSet) {
+        Field[] fields = type.getFields();
+        FieldWormType[] fieldWormTypes = new FieldWormType[fields.length];
+
+        for(int i = 0; i < fields.length; i++){
+            try{
+                fieldWormTypes[i] = new FieldWormType(
+                        fields[i].getName(),
+                        //Gets column value from ResultSet
+                        resultSet.getObject(fields[i].getName()),
+                        getAnnotation(fields[i]),
+                        fields[i].getType(),
+                        getAcceptedTypeCode(fields[i].getType())
+                );
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
+        return fieldWormTypes;
+    }
+
+    public FieldWormType[][] convertToMatrixFieldWormType(Class type, ResultSet resultSet) {
+        Field[] fields = type.getFields();
+        int rows = getRowCount(resultSet);
+        int columns = fields.length;
+        FieldWormType[][] fieldWormTypes = new FieldWormType[rows][columns];
+
+        for(int i = 0; i < rows; i++){
+            try{
+                for(int j = 0; j < columns; j++){
+                    fieldWormTypes[i][j] = new FieldWormType(
+                            fields[j].getName(),
+                            //Gets column value from ResultSet
+                            resultSet.getObject(fields[j].getName()),
+                            getAnnotation(fields[j]),
+                            fields[j].getType(),
+                            getAcceptedTypeCode(fields[j].getType())
+                    );
+                }
+                resultSet.next();
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
+        return fieldWormTypes;
+    }
+
+    private int getRowCount(ResultSet resultSet){
+        int totalRows;
+
+        if(resultSet != null){
+            try {
+                resultSet.last();
+                totalRows = resultSet.getRow();
+                resultSet.first();
+                return totalRows;
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return 0;
     }
 
     private FieldWormType bindField(Object object, Field objectField) {

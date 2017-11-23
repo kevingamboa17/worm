@@ -2,6 +2,9 @@ package persistence;
 
 import domain.FieldWormType;
 
+import java.sql.Time;
+import java.util.Date;
+
 public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, persistence.contracts.QueryBuilder.Validator {
 
     private final String CREATE = "CREATE";
@@ -68,16 +71,44 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
 
         for (int j=0;j<attributes.length;j++){
 
-            if(attributes[j].getOriginalType().getTypeName() == "java.lang.String"){
-                query
-                    .append("'")
-                    .append(attributes[j].getValue())
-                    .append("'")
-                    .append(",");
-            }else{
-                query
-                    .append(attributes[j].getValue())
-                    .append(",");
+            switch (attributes[j].getValue().getClass().getName()){
+                case "java.util.Date":
+                    Date date = Date.class.cast(attributes[j].getValue());
+
+                    query
+                        .append("'")
+                        .append(date.getYear()+1900)
+                        .append("-")
+                        .append(date.getMonth()+1)
+                        .append("-")
+                        .append(date.getDate()+1)
+                        .append("'")
+                        .append(",");
+                    break;
+                case "java.sql.Time":
+                    Time time = Time.class.cast(attributes[j].getValue());
+
+                    query
+                        .append("'")
+                        .append(time.getHours())
+                        .append(":")
+                        .append(time.getMinutes())
+                        .append(":")
+                        .append(time.getSeconds())
+                        .append("'")
+                        .append(",");
+                    break;
+                case "java.lang.String":
+                    query
+                        .append("'")
+                        .append(attributes[j].getValue())
+                        .append("'")
+                        .append(",");
+                    break;
+                default:
+                    query
+                        .append(attributes[j].getValue())
+                        .append(",");
             }
 
         }
@@ -103,14 +134,41 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
             query
                 .append(attributes[i].getFieldName())
                 .append(" = ");
-                if(attributes[i].getOriginalType().getTypeName() == "java.lang.String"){
+
+            switch (attributes[i].getValue().getClass().getName()){
+                case "java.util.Date":
+                    Date date = Date.class.cast(attributes[i].getValue());
+
                     query
-                        .append("'")
-                        .append(attributes[i].getValue())
-                        .append("'");
-                }else{
+                            .append("'")
+                            .append(date.getYear()+1900)
+                            .append("-")
+                            .append(date.getMonth()+1)
+                            .append("-")
+                            .append(date.getDate()+1)
+                            .append("'");
+                    break;
+                case "java.sql.Time":
+                    Time time = Time.class.cast(attributes[i].getValue());
+
+                    query
+                            .append("'")
+                            .append(time.getHours())
+                            .append(":")
+                            .append(time.getMinutes())
+                            .append(":")
+                            .append(time.getSeconds())
+                            .append("'");
+                    break;
+                case "java.lang.String":
+                    query
+                            .append("'")
+                            .append(attributes[i].getValue())
+                            .append("'");
+                    break;
+                default:
                     query.append(attributes[i].getValue());
-                }
+            }
                 query.append(",");
         }
 

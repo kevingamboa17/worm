@@ -16,7 +16,15 @@ public class DummyTests {
         //tryIntrospection();
         //tryReflexion();
         //tryQueryBuilder();
-        tryWormConfig();
+        //tryWormConfig();
+        trySave();
+    }
+
+    private static void trySave() {
+        new WormConfig("wormDB");
+        Dog dog1 = new Dog("Carlos2", "Santana2", 2, new Date());
+        dog1.setObjectID(2);
+        dog1.save();
     }
 
     private static void tryWormConfig() {

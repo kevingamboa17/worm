@@ -15,13 +15,13 @@ public class DBManager implements persistence.contracts.DBManager {
 
 
     public DBManager() {
-        dbValidator = new persistence.DBValidator();
-        dbExecuteQuery = new persistence.DBExecuteQuery();
         WormConfig wormConfig = WormConfig.newInstance();
         this.dbName = wormConfig.getDbName();
         dbConnection = new persistence.DBConnection(
                 wormConfig.getPoolConnections()
         );
+        dbExecuteQuery = new persistence.DBExecuteQuery(dbConnection);
+        dbValidator = new persistence.DBValidator(dbExecuteQuery);
         queryBuilder = new QueryBuilder();
     }
 

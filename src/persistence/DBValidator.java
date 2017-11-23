@@ -1,15 +1,16 @@
 package persistence;
 
 import domain.FieldWormType;
+import persistence.contracts.DBExecuteQuery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBValidator implements persistence.contracts.DBValidator{
 
-    private DBExecuteQuery dbExecuteQuery;
+    private persistence.contracts.DBExecuteQuery dbExecuteQuery;
 
-    public void BDValidator(DBExecuteQuery dbExecuteQuery){
+    public  DBValidator(DBExecuteQuery dbExecuteQuery){
         this.dbExecuteQuery = dbExecuteQuery;
     }
 

@@ -1,8 +1,11 @@
 import business.ObjectBuilder;
 import business.TypeMatcher;
 import domain.FieldWormType;
+import domain.WormConfig;
+import persistence.contracts.PoolConnections;
 import persistence.contracts.QueryBuilder;
 
+import java.sql.Connection;
 import java.util.Date;
 
 public class DummyTests {
@@ -12,7 +15,30 @@ public class DummyTests {
     public static void main(String[] args) {
         //tryIntrospection();
         //tryReflexion();
-        tryQueryBuilder();
+        //tryQueryBuilder();
+        tryWormConfig();
+    }
+
+    private static void tryWormConfig() {
+        WormConfig wormConfig1 = new WormConfig(new PoolConnections() {
+            @Override
+            public Connection getConnection() {
+                return null;
+            }
+
+            @Override
+            public void configurePool() {
+
+            }
+
+            @Override
+            public void closeConnection(Connection connection) {
+
+            }
+        });
+        WormConfig wormConfig = WormConfig.newInstance();
+        WormConfig wormConfig2 = WormConfig.newInstance();
+        String hey = "";
     }
 
     private static void tryIntrospection() {

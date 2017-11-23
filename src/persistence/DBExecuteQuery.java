@@ -6,9 +6,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
+
+    private DBConnection dbConnection;
+
+    public void DBExecuteQuery(DBConnection dbConnection){
+        this.dbConnection = dbConnection;
+    }
+
     @Override
     public ResultSet rowExist(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -24,7 +30,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public ResultSet tableAttributes(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -40,7 +45,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public ResultSet tableExist(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -56,7 +60,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public void insertEntity(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -69,7 +72,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public void updateEntity(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -82,7 +84,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public void deleteEntity(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -95,7 +96,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public ResultSet findEntity(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -111,7 +111,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public ResultSet allEntities(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -127,7 +126,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public void createDB(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -140,7 +138,6 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
 
     @Override
     public void createTable(String query) {
-        DBConnection dbConnection= new DBConnection();
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);

@@ -16,7 +16,7 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
     }
 
     @Override
-    public ResultSet rowExist(String query) {
+    public ResultSet executeSelectQuery(String query) {
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -31,122 +31,17 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
     }
 
     @Override
-    public ResultSet tableAttributes(String query) {
+    public void executeModificationQuery(String query) {
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            dbConnection.closeConnection(connection);
-
-            return resultSet;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public ResultSet tableExist(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            dbConnection.closeConnection(connection);
-
-            return resultSet;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public void insertEntity(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeQuery();
+            statement.executeUpdate();
             dbConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void updateEntity(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeQuery();
-            dbConnection.closeConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @Override
-    public void deleteEntity(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeQuery();
-            dbConnection.closeConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    @Override
-    public ResultSet findEntity(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            dbConnection.closeConnection(connection);
-
-            return resultSet;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public ResultSet allEntities(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet resultSet = statement.executeQuery();
-            dbConnection.closeConnection(connection);
-
-            return resultSet;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
-    public void createDB(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeQuery();
-            dbConnection.closeConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void createTable(String query) {
-        Connection connection = dbConnection.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.executeQuery();
-            dbConnection.closeConnection(connection);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

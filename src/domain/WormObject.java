@@ -3,7 +3,7 @@ package domain;
 import business.BusinessManager;
 
 public class WormObject {
-    private int objectID;
+    private int objectID = -1;
     private BusinessManager mBusinessManager;
 
 
@@ -24,8 +24,10 @@ public class WormObject {
         return (T)(mBusinessManager.findById(type, id));
     }
 
-    public <T>T[] getAll(){
-        return (T[]) this.mBusinessManager.getAll(this.getClass());
+    public static <T>T[] getAll(Class<T> type){
+        BusinessManager mBusinessManager = new BusinessManager();
+        // TODO: this should call to mBusinessManager.getAll(type)
+        return (T[]) mBusinessManager.getAll2(type);
     }
 
     public void setObjectID(int objectID) {

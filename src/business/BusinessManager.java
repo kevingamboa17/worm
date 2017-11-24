@@ -4,7 +4,9 @@ import domain.FieldWormType;
 import domain.WormObject;
 import persistence.DBManager;
 
-public class BusinessManager implements business.contracts.BusinessManager {
+import java.lang.reflect.Array;
+
+public class BusinessManager <GenericObject extends WormObject> implements business.contracts.BusinessManager {
     private DBManager mDBManager;
     private ObjectBuilder objectBuilder;
     private TypeMatcher typeMatcher;
@@ -29,9 +31,10 @@ public class BusinessManager implements business.contracts.BusinessManager {
     @Override
     public WormObject findById(Class type, int id) {
         FieldWormType[] fieldWormTypes = this.mDBManager.getObject(type, type.getName(), id);
-        return this.objectBuilder.buildObject(type.getClass(), fieldWormTypes);
+        return this.objectBuilder.buildObject(type, fieldWormTypes);
     }
 
+    // TODO: Refactor this method works as getAll2 below
     @Override
     public WormObject[] getAll(Class type) {
         WormObject[] wormObjects;
@@ -39,7 +42,20 @@ public class BusinessManager implements business.contracts.BusinessManager {
         wormObjects = new WormObject[fieldWormTypes.length];
 
         for(int i = 0; i < fieldWormTypes.length; i++){
-            wormObjects[i] = this.objectBuilder.buildObject(type.getClass(), fieldWormTypes[i]);
+            wormObjects[i] = this.objectBuilder.buildObject(type, fieldWormTypes[i]);
+        }
+
+        return wormObjects;
+    }
+
+    public <T>T[] getAll2(Class<T> type) {
+        T[] wormObjects;
+        FieldWormType[][] fieldWormTypes = this.mDBManager.getAll(type, type.getName());
+        wormObjects = (T[])Array.newInstance(type, fieldWormTypes.length);
+
+
+        for(int i = 0; i < fieldWormTypes.length; i++){
+            wormObjects[i] = (T) this.objectBuilder.buildObject(type, fieldWormTypes[i]);
         }
 
         return wormObjects;

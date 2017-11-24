@@ -7,6 +7,7 @@ import persistence.contracts.DBConnection;
 import persistence.contracts.DBExecuteQuery;
 import persistence.contracts.DBValidator;
 
+import java.sql.SQLException;
 
 public class DBManager implements persistence.contracts.DBManager {
     private final DBValidator dbValidator;
@@ -42,7 +43,8 @@ public class DBManager implements persistence.contracts.DBManager {
     @Override
     public void save(String tableName, FieldWormType[] values) {
         boolean isDBValid = dbValidator.isDBValid(dbName, tableName, values);
-        if (isDBValid && dbValidator.validateRowExist(tableName, values[0].getFieldName(), (int)values[0].getValue())) {
+        boolean rowExist = dbValidator.validateRowExist(tableName, values[0].getFieldName(), (int)values[0].getValue());
+        if (isDBValid && rowExist) {
             update(tableName, values);
         } else if (isDBValid){
             create(tableName, values);
@@ -76,11 +78,35 @@ public class DBManager implements persistence.contracts.DBManager {
 
     @Override
     public FieldWormType[] getObject(Class type, String tableName, int id) {
-        return typeMatcher.convertToArrayFieldWormType(type, null);
+        try {
+            return typeMatcher.convertToArrayFieldWormType(
+                    type,
+                    dbExecuteQuery.executeSelectQuery(
+                        queryBuilder.findEntity(
+                                tableName,
+                                "objectID",
+                                id
+                        )
+                    )
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public FieldWormType[][] getAll(Class type, String tableName) {
-        return typeMatcher.convertToMatrixFieldWormType(type, null);
+        try {
+            return typeMatcher.convertToMatrixFieldWormType(
+                    type,
+                    dbExecuteQuery.executeSelectQuery(
+                        queryBuilder.allEntities(tableName)
+                    )
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

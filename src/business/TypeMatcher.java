@@ -17,7 +17,7 @@ public class TypeMatcher {
         FieldWormType[] fieldWormTypes = new FieldWormType[objectFields.length + 1];
 
         // The first one will be the id
-        fieldWormTypes[0] = bindField(object, getFieldId(object));
+        fieldWormTypes[0] = bindField(object, getFieldId(object.getClass()));
 
         for (int i = 1; i < fieldWormTypes.length; i++) {
             fieldWormTypes[i] = bindField(object, objectFields[i-1]);
@@ -27,51 +27,55 @@ public class TypeMatcher {
         return fieldWormTypes;
     }
 
-    public FieldWormType[] convertToArrayFieldWormType(Class type, ResultSet resultSet) {
-        Field[] fields = type.getFields();
-        FieldWormType[] fieldWormTypes = new FieldWormType[fields.length];
+    public FieldWormType[] convertToArrayFieldWormType(Class type, ResultSet resultSet) throws SQLException {
+        Field fieldId = getFieldId(type);
+        Field[] fields = type.getDeclaredFields();
+        FieldWormType[] fieldWormTypes = new FieldWormType[fields.length + 1];
 
-        for(int i = 0; i < fields.length; i++){
-            try{
-                fieldWormTypes[i] = new FieldWormType(
-                        fields[i].getName(),
-                        //Gets column value from ResultSet
-                        resultSet.getObject(fields[i].getName()),
-                        getAnnotation(fields[i]),
-                        fields[i].getType(),
-                        getAcceptedTypeCode(fields[i].getType())
-                );
-            }
-            catch (SQLException e){
-                e.printStackTrace();
+        if (resultSet.next()) {
+            fieldWormTypes[0] = bindField(resultSet, fieldId);
+            for(int i = 1; i < fieldWormTypes.length; i++){
+                try{
+                    fieldWormTypes[i] = bindField(resultSet, fields[i-1]);
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
             }
         }
 
         return fieldWormTypes;
     }
 
-    public FieldWormType[][] convertToMatrixFieldWormType(Class type, ResultSet resultSet) {
-        Field[] fields = type.getFields();
+    private FieldWormType bindField(ResultSet resultSet, Field field) throws SQLException {
+        return new FieldWormType(
+                field.getName(),
+                //Gets column value from ResultSet
+                resultSet.getObject(field.getName()),
+                getAnnotation(field),
+                field.getType(),
+                getAcceptedTypeCode(field.getType())
+        );
+    }
+
+    public FieldWormType[][] convertToMatrixFieldWormType(Class type, ResultSet resultSet) throws SQLException {
+        Field fieldId = getFieldId(type);
+        Field[] fields = type.getDeclaredFields();
         int rows = getRowCount(resultSet);
-        int columns = fields.length;
+        int columns = fields.length + 1;
         FieldWormType[][] fieldWormTypes = new FieldWormType[rows][columns];
 
         for(int i = 0; i < rows; i++){
-            try{
-                for(int j = 0; j < columns; j++){
-                    fieldWormTypes[i][j] = new FieldWormType(
-                            fields[j].getName(),
-                            //Gets column value from ResultSet
-                            resultSet.getObject(fields[j].getName()),
-                            getAnnotation(fields[j]),
-                            fields[j].getType(),
-                            getAcceptedTypeCode(fields[j].getType())
-                    );
+            if (resultSet.next()) {
+                fieldWormTypes[i][0] = bindField(resultSet, fieldId);
+                try{
+                    for(int j = 1; j < columns; j++){
+                        fieldWormTypes[i][j] = bindField(resultSet, fields[j-1]);
+                    }
                 }
-                resultSet.next();
-            }
-            catch (SQLException e){
-                e.printStackTrace();
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -80,12 +84,11 @@ public class TypeMatcher {
 
     private int getRowCount(ResultSet resultSet){
         int totalRows;
-
         if(resultSet != null){
             try {
                 resultSet.last();
                 totalRows = resultSet.getRow();
-                resultSet.first();
+                resultSet.beforeFirst();
                 return totalRows;
             }
             catch (SQLException e) {
@@ -176,10 +179,10 @@ public class TypeMatcher {
         }
     }
 
-    private Field getFieldId(Object object) {
+    private Field getFieldId(Class object) {
         Field idField = null;
         try {
-            idField = object.getClass().getSuperclass().getDeclaredField("objectID");
+            idField = object.getSuperclass().getDeclaredField("objectID");
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }

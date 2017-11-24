@@ -2,6 +2,7 @@ import business.ObjectBuilder;
 import business.TypeMatcher;
 import domain.FieldWormType;
 import domain.WormConfig;
+import domain.WormObject;
 import persistence.contracts.PoolConnections;
 import persistence.contracts.QueryBuilder;
 
@@ -21,13 +22,28 @@ public class DummyTests {
         //tryReflexion();
         //tryQueryBuilder();
         //tryWormConfig();
-        trySave();
+        //trySave();
+        //tryGet();
+        tryGetAll();
+    }
+
+    private static void tryGetAll() {
+        new WormConfig("wormDB", HOST, PORT, USER, PASSW);
+        Dog[] dogs = WormObject.getAll(Dog.class);
+        for (WormObject dog: dogs) {
+            System.out.println(dog);
+        }
+    }
+
+    private static void tryGet() {
+        new WormConfig("wormDB", HOST, PORT, USER, PASSW);
+        Dog dog = WormObject.findById(Dog.class, 1);
+        System.out.println(dog);
     }
 
     private static void trySave() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
-        Dog dog1 = new Dog("Carlos2", "Santana2", 2, new Date());
-        dog1.setObjectID(2);
+        Dog dog1 = new Dog("Marco", "Chavez", 20, new Date());
         dog1.save();
     }
 

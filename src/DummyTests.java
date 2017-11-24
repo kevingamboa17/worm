@@ -3,51 +3,54 @@ import business.TypeMatcher;
 import domain.FieldWormType;
 import domain.WormConfig;
 import domain.WormObject;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import persistence.contracts.PoolConnections;
-import persistence.contracts.QueryBuilder;
 
 import java.sql.Connection;
 import java.util.Date;
 
 public class DummyTests {
     private static final String HOST = "localhost";
-    private static final String PORT = "";
+    private static final String PORT = "3306";
     private static final String DATABASE = "wormDB";
     private static final String USER = "";
     private static final String PASSW = "";
+    private static int numberOfObjectsInDb = 4; // Number of YOUR objects in YOUR DB
 
 
-    public static void main(String[] args) {
-        //tryIntrospection();
-        //tryReflexion();
-        //tryQueryBuilder();
-        //tryWormConfig();
-        //trySave();
-        //tryGet();
-        tryGetAll();
-    }
-
-    private static void tryGetAll() {
+    @Test
+    public void tryGetAll() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
         Dog[] dogs = WormObject.getAll(Dog.class);
-        for (WormObject dog: dogs) {
-            System.out.println(dog);
-        }
+
+        assertEquals(numberOfObjectsInDb, dogs.length);
     }
 
-    private static void tryGet() {
+    @Test
+    public void tryGet() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
         Dog dog = WormObject.findById(Dog.class, 1);
-        System.out.println(dog);
+        assertNotNull(dog);
     }
 
-    private static void trySave() {
+    @Test
+    public void trySave() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
+        Dog[] dogsBefore = WormObject.getAll(Dog.class);
+        numberOfObjectsInDb = dogsBefore.length;
+
         Dog dog1 = new Dog("Marco", "Chavez", 20, new Date());
+        dog1.setObjectID(7);
         dog1.save();
+        Dog[] dogsAfter = WormObject.getAll(Dog.class);
+
+        assertEquals(numberOfObjectsInDb + 1, dogsAfter.length);
+        numberOfObjectsInDb++;
     }
 
-    private static void tryWormConfig() {
+    @Test
+    public void tryWormConfig() {
         WormConfig wormConfig1 = new WormConfig("wormDB", HOST, PORT, USER, PASSW ,new PoolConnections() {
             @Override
             public Connection getConnection() {
@@ -66,7 +69,9 @@ public class DummyTests {
         });
         WormConfig wormConfig = WormConfig.newInstance();
         WormConfig wormConfig2 = WormConfig.newInstance();
-        String hey = "";
+
+        assertEquals(wormConfig, wormConfig2);
+        assertEquals(wormConfig1, wormConfig);
     }
 
     private static void tryIntrospection() {

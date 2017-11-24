@@ -9,14 +9,16 @@ public class ObjectBuilder<GenericObject extends WormObject>  {
     private final String ID_FIELD_NAME = "objectID";
 
     public GenericObject buildObject(Class<GenericObject> genericObjectClass, FieldWormType[] values) {
-        GenericObject object = initializeObject(genericObjectClass);
-        FieldWormType idValue = getFieldIDValue(values);
-        Field[] classFields = genericObjectClass.getDeclaredFields();
+        if(values != null) {
+            GenericObject object = initializeObject(genericObjectClass);
+            FieldWormType idValue = getFieldIDValue(values);
+            Field[] classFields = genericObjectClass.getDeclaredFields();
 
-        setObjectFieldValues(object, classFields, values);
-        setObjectFieldIDValue(object, idValue);
-
-        return object;
+            setObjectFieldValues(object, classFields, values);
+            setObjectFieldIDValue(object, idValue);
+            return object;
+        }
+        return null;
     }
 
     private void setObjectFieldValues(GenericObject object, Field[] classFields, FieldWormType[] values) {

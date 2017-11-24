@@ -37,6 +37,7 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate();
 
+            dbConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }

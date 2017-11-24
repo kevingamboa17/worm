@@ -42,6 +42,8 @@ public class TypeMatcher {
                     e.printStackTrace();
                 }
             }
+        } else{
+            return null;
         }
 
         return fieldWormTypes;

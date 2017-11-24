@@ -3,6 +3,7 @@ package persistence;
 import business.TypeMatcher;
 import domain.FieldWormType;
 import domain.WormConfig;
+import persistence.contracts.DBQueryCompleted;
 import persistence.contracts.DBConnection;
 import persistence.contracts.DBExecuteQuery;
 import persistence.contracts.DBValidator;
@@ -79,16 +80,22 @@ public class DBManager implements persistence.contracts.DBManager {
     @Override
     public FieldWormType[] getObject(Class type, String tableName, int id) {
         try {
-            return typeMatcher.convertToArrayFieldWormType(
-                    type,
-                    dbExecuteQuery.executeSelectQuery(
-                        queryBuilder.findEntity(
-                                tableName,
-                                "objectID",
-                                id
-                        )
+
+            DBQueryCompleted dbQueryCompleted = dbExecuteQuery.executeSelectQuery(
+                    queryBuilder.findEntity(
+                            tableName,
+                            "objectID",
+                            id
                     )
             );
+
+            FieldWormType[] fieldWormTypes = typeMatcher.convertToArrayFieldWormType(
+                    type, dbQueryCompleted.getResultSet()
+            );
+
+            dbQueryCompleted.closeConnection();
+
+            return fieldWormTypes;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -98,12 +105,19 @@ public class DBManager implements persistence.contracts.DBManager {
     @Override
     public FieldWormType[][] getAll(Class type, String tableName) {
         try {
-            return typeMatcher.convertToMatrixFieldWormType(
-                    type,
-                    dbExecuteQuery.executeSelectQuery(
-                        queryBuilder.allEntities(tableName)
-                    )
+
+            DBQueryCompleted dbQueryCompleted = dbExecuteQuery.executeSelectQuery(
+                    queryBuilder.allEntities(tableName)
             );
+
+            FieldWormType[][] fieldWormTypes = typeMatcher.convertToMatrixFieldWormType(
+                    type,
+                    dbQueryCompleted.getResultSet()
+            );
+
+            dbQueryCompleted.closeConnection();
+
+            return fieldWormTypes;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

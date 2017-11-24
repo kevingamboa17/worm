@@ -57,7 +57,7 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
             .append(" ")
             .append(tableName).append(" (");
 
-        for (int j=0;j<attributes.length;j++){
+        for (int j=1;j<attributes.length;j++){
             query
                 .append(attributes[j].getFieldName())
                 .append(",");
@@ -69,7 +69,7 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
             .append(VALUES)
             .append(" (");
 
-        for (int j=0;j<attributes.length;j++){
+        for (int j=1;j<attributes.length;j++){
 
             switch (attributes[j].getValue().getClass().getName()){
                 case "java.util.Date":

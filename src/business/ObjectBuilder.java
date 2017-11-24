@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 public class ObjectBuilder<GenericObject extends WormObject>  {
     private final String ID_FIELD_NAME = "objectID";
 
-    public GenericObject buildObject(Class<WormObject> genericObjectClass, FieldWormType[] values) {
+    public GenericObject buildObject(Class<GenericObject> genericObjectClass, FieldWormType[] values) {
         GenericObject object = initializeObject(genericObjectClass);
         FieldWormType idValue = getFieldIDValue(values);
         Field[] classFields = genericObjectClass.getDeclaredFields();
@@ -35,6 +35,10 @@ public class ObjectBuilder<GenericObject extends WormObject>  {
     }
 
     private void setObjectFieldIDValue(GenericObject object, FieldWormType idValue) {
+        if (idValue == null){
+            return;
+        }
+
         Field idField = null;
         try {
             idField = object.getClass().getSuperclass().getDeclaredField("objectID");
@@ -62,7 +66,7 @@ public class ObjectBuilder<GenericObject extends WormObject>  {
         return null;
     }
 
-    private GenericObject initializeObject (Class<WormObject> objectClass) {
+    private GenericObject initializeObject (Class<GenericObject> objectClass) {
         try {
             return  (GenericObject) objectClass.newInstance();
         } catch (InstantiationException e) {

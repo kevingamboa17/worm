@@ -37,13 +37,27 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
     }
 
     @Override
-    public String createTable(String tableName, String[] attributesNames) {
+    public String createTable(String tableName, FieldWormType[] attributesNames) {
         StringBuilder query = new StringBuilder("");
 
         query
             .append(CREATE)
             .append(" TABLE ")
-            .append(tableName);
+            .append(tableName)
+            .append(" (")
+            .append(attributesNames[0].getValue())
+            .append(" ")
+            .append("INT NOT NULL AUTO_INCREMENT, ");
+
+        for(int i=1;i<attributesNames.length;i++){
+            query
+                .append(attributesNames[i].getValue())
+                .append(" ")
+                .append("TEXT NULL")
+                .append(",");
+        }
+
+        query.append("");
 
         return query.toString();
     }

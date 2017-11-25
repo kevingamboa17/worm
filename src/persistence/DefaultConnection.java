@@ -1,13 +1,10 @@
 package persistence;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
-import domain.WormConfig;
 import persistence.contracts.PoolConnections;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DefaultConnection implements PoolConnections {
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -25,7 +22,7 @@ public class DefaultConnection implements PoolConnections {
         this.DATABASE = DATABASE;
         this.USER = USER;
         this.PASSW = PASSW;
-        this.DATABASE_URL = "jdbc:mysql://" + this.HOST + ":" + this.PORT + "/" + this.DATABASE;
+        this.DATABASE_URL = "jdbc:mysql://" + this.HOST + ":" + this.PORT + "/" + this.DATABASE + "?useSSL=false";
     }
 
     @Override

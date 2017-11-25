@@ -8,9 +8,9 @@ public class FieldWormType {
     private Object value;
     private Annotation annotation;
     private Type originalType;
-    private int databaseType;
+    private String databaseType;
 
-    public FieldWormType(String fieldName, Object value, Annotation annotation, Type originalType, int databaseType) {
+    public FieldWormType(String fieldName, Object value, Annotation annotation, Type originalType, String databaseType) {
         this.fieldName = fieldName;
         this.value = value;
         this.annotation = annotation;
@@ -18,7 +18,7 @@ public class FieldWormType {
         this.databaseType = databaseType;
     }
 
-    public FieldWormType(String fieldName, Object value, Type originalType, int databaseType) {
+    public FieldWormType(String fieldName, Object value, Type originalType, String databaseType) {
         this.fieldName = fieldName;
         this.value = value;
         this.originalType = originalType;
@@ -37,7 +37,7 @@ public class FieldWormType {
         return originalType;
     }
 
-    public int getDatabaseType() {
+    public String getDatabaseType() {
         return databaseType;
     }
 

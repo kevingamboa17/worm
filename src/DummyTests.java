@@ -14,9 +14,9 @@ public class DummyTests {
     private static final String HOST = "localhost";
     private static final String PORT = "3306";
     private static final String DATABASE = "wormDB";
-    private static final String USER = "";
+    private static final String USER = "root";
     private static final String PASSW = "";
-    private static int numberOfObjectsInDb = 4; // Number of YOUR objects in YOUR DB
+    private static int numberOfObjectsInDb = 0; // Number of YOUR objects DB
 
 
     @Test
@@ -41,7 +41,6 @@ public class DummyTests {
         numberOfObjectsInDb = dogsBefore.length;
 
         Dog dog1 = new Dog("Marco", "Chavez", 20, new Date());
-        dog1.setObjectID(7);
         dog1.save();
         Dog[] dogsAfter = WormObject.getAll(Dog.class);
 
@@ -76,11 +75,11 @@ public class DummyTests {
 
     private static void tryIntrospection() {
         ObjectBuilder objectBuilder = new ObjectBuilder();
-        FieldWormType type1 = new FieldWormType("name", "Carlos", null, String.class.getGenericSuperclass(), 0 );
-        FieldWormType type2 = new FieldWormType("lastName", "Santana", null, String.class.getGenericSuperclass(), 0 );
-        FieldWormType type3 = new FieldWormType("age", 2, null, Integer.class.getGenericSuperclass(), 0 );
-        FieldWormType type4 = new FieldWormType("birthday", new Date(), null, Date.class.getGenericSuperclass(), 0 );
-        FieldWormType type5 = new FieldWormType("objectID", 12, null, Integer.class.getGenericSuperclass(), 0 );
+        FieldWormType type1 = new FieldWormType("name", "Carlos", null, String.class.getGenericSuperclass(), "");
+        FieldWormType type2 = new FieldWormType("lastName", "Santana", null, String.class.getGenericSuperclass(), "" );
+        FieldWormType type3 = new FieldWormType("age", 2, null, Integer.class.getGenericSuperclass(), "");
+        FieldWormType type4 = new FieldWormType("birthday", new Date(), null, Date.class.getGenericSuperclass(), "");
+        FieldWormType type5 = new FieldWormType("objectID", 12, null, Integer.class.getGenericSuperclass(), "");
 
         FieldWormType[] fieldWormTypes = {type1, type2, type3, type4, type5};
 
@@ -104,7 +103,6 @@ public class DummyTests {
         persistence.QueryBuilder query = new persistence.QueryBuilder();
         TypeMatcher matcher = new TypeMatcher();
         Dog dog2 = new Dog("Carlos", "Santa", 2, new Date());
-
 
         String query2 = query.allEntities("perrosTable");
         System.out.println(query2);

@@ -121,47 +121,20 @@ public class TypeMatcher {
     }
 
     private String getAcceptedTypeCode(Type fieldType) {
-        return null;
-//        switch (fieldType.getTypeName()) {
-//            case "java.lang.String":
-//                return Types.LONGNVARCHAR;
-//            case "boolean":
-//                return Types.BOOLEAN;
-//            case  "java.math.BigDecimal":
-//                return Types.NUMERIC;
-//            case  "byte":
-//                return Types.TINYINT;
-//            case  "short":
-//                return Types.SMALLINT;
-//            case  "int":
-//                return Types.INTEGER;
-//            case  "long":
-//                return Types.BIGINT;
-//            case  "float":
-//                return Types.FLOAT;
-//            case  "double":
-//                return Types.DOUBLE;
-//            case  "byte[ ]":
-//                return Types.BINARY;
-//            case  "java.sql.Date":
-//                return Types.DATE;
-//            case  "java.sql.Time":
-//                return Types.TIME;
-//            case  "java.sql.Timestamp":
-//                return Types.TIMESTAMP;
-//            case  "java.sql.Clob":
-//                return Types.CLOB;
-//            case  "java.sql.Blob":
-//                return Types.BLOB;
-//            case  "java.sql.Array":
-//                return Types.ARRAY;
-//            case  "java.sql.Ref":
-//                return Types.REF;
-//            case  "java.sql.Struct":
-//                return Types.STRUCT;
-//            default:
-//                return Types.OTHER;
-//        }
+        switch (fieldType.getTypeName()) {
+            case "java.lang.String":
+                return "text";
+            case "boolean":
+                return "tinyint(1)";
+            case  "int":
+                return "int";
+            case  "java.sql.Date":
+                return "date";
+            case  "java.sql.Time":
+                return "time";
+            default:
+                return "text";
+        }
     }
 
     private Object getFieldValue(Object object, Field field) {

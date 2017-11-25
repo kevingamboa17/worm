@@ -3,6 +3,7 @@ package persistence.contracts;
 import domain.FieldWormType;
 
 public interface DBManager {
+    void createDB(String DBName);
     void save(String tableName, FieldWormType[] values);
     void update(String tableName, FieldWormType[] values);
     void create(String tableName, FieldWormType[] values);

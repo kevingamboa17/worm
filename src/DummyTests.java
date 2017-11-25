@@ -14,10 +14,20 @@ public class DummyTests {
     private static final String HOST = "localhost";
     private static final String PORT = "3306";
     private static final String DATABASE = "wormDB";
-    private static final String USER = "";
+    private static final String USER = "root";
     private static final String PASSW = "";
     private static int numberOfObjectsInDb = 4; // Number of YOUR objects in YOUR DB
 
+
+    public static void main(String[] args) {
+        //tryIntrospection();
+        //tryReflexion();
+        //tryQueryBuilder();
+        //tryWormConfig();
+        trySave();
+        //tryGet();
+        //tryGetAll();
+    }
 
     @Test
     public void tryGetAll() {

@@ -22,7 +22,7 @@ public class DefaultConnection implements PoolConnections {
         this.DATABASE = DATABASE;
         this.USER = USER;
         this.PASSW = PASSW;
-        this.DATABASE_URL = "jdbc:mysql://" + this.HOST + ":" + this.PORT + "/" + this.DATABASE;
+        this.DATABASE_URL = "jdbc:mysql://" + this.HOST + ":" + this.PORT + "/" + this.DATABASE + "?useSSL=false";
     }
 
     @Override
@@ -30,11 +30,9 @@ public class DefaultConnection implements PoolConnections {
         try {
             Class.forName(JDBC_DRIVER);
             return DriverManager.getConnection(DATABASE_URL, USER, PASSW);
-        }
-        catch (ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        catch (SQLException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;

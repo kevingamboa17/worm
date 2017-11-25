@@ -1,5 +1,6 @@
 package persistence;
 
+import persistence.contracts.DBQueryCompleted;
 import persistence.contracts.DBConnection;
 
 import java.sql.Connection;
@@ -16,14 +17,24 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
     }
 
     @Override
-    public ResultSet executeSelectQuery(String query) {
+    public DBQueryCompleted executeSelectQuery(String query) {
         Connection connection = dbConnection.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
 
 
-            return resultSet;
+            return new DBQueryCompleted() {
+                @Override
+                public ResultSet getResultSet() {
+                    return resultSet;
+                }
+
+                @Override
+                public void closeConnection() {
+                    dbConnection.closeConnection(connection);
+                }
+            };
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,6 +48,7 @@ public class DBExecuteQuery implements persistence.contracts.DBExecuteQuery {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.executeUpdate();
 
+            dbConnection.closeConnection(connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }

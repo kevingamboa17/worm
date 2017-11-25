@@ -1,7 +1,9 @@
 package persistence;
 
 import domain.FieldWormType;
+import domain.WormColumn;
 
+import java.lang.annotation.Annotation;
 import java.sql.Time;
 import java.util.Date;
 
@@ -59,7 +61,9 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
 
         for (int j=1;j<attributes.length;j++){
             query
-                .append(attributes[j].getFieldName())
+                .append(
+                        getColumnName(attributes[j])
+                )
                 .append(",");
         }
 
@@ -132,7 +136,9 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
 
         for (int i=0;i<attributes.length;i++){
             query
-                .append(attributes[i].getFieldName())
+                .append(
+                        getColumnName(attributes[i])
+                )
                 .append(" = ");
 
             switch (attributes[i].getValue().getClass().getName()){
@@ -339,5 +345,14 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
                 .append(dataBaseName);
 
         return query.toString();
+    }
+  
+    private String getColumnName(FieldWormType field) {
+        Annotation annotation = field.getAnnotation();
+        boolean hasWormTableAnnotation = annotation != null && annotation instanceof WormColumn;
+        if (hasWormTableAnnotation) {
+            return ((WormColumn) annotation).value();
+        }
+        return field.getFieldName();
     }
 }

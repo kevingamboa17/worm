@@ -1,6 +1,7 @@
 package business;
 
 import domain.FieldWormType;
+import domain.WormColumn;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -8,7 +9,6 @@ import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.List;
 
 public class TypeMatcher {
 
@@ -53,7 +53,9 @@ public class TypeMatcher {
         return new FieldWormType(
                 field.getName(),
                 //Gets column value from ResultSet
-                resultSet.getObject(field.getName()),
+                resultSet.getObject(
+                        getColumnName(field)
+                ),
                 getAnnotation(field),
                 field.getType(),
                 getAcceptedTypeCode(field.getType())
@@ -189,5 +191,14 @@ public class TypeMatcher {
             e.printStackTrace();
         }
         return idField;
+    }
+
+    private String getColumnName(Field field) {
+        Annotation annotation = field.getAnnotation(WormColumn.class);
+        boolean hasWormTableAnnotation = annotation != null;
+        if (hasWormTableAnnotation) {
+            return ((WormColumn) annotation).value();
+        }
+        return field.getName();
     }
 }

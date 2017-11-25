@@ -1,9 +1,11 @@
 import domain.WormObject;
+import domain.WormColumn;
 
 import java.util.Date;
 
 public class Dog extends WormObject {
-    private String name;
+    @WormColumn("name")
+    private String name2;
     public String lastName;
     private int age;
     private Date birthday;
@@ -12,7 +14,7 @@ public class Dog extends WormObject {
     public String toString() {
         String phrase = new StringBuilder().
                 append("Hola, mi nombre es ").
-                append(name).
+                append(name2).
                 append(" ").
                 append(lastName).
                 append(" y tengo ").
@@ -24,7 +26,7 @@ public class Dog extends WormObject {
     }
 
     public Dog(String name, String lastName, int age, Date birthday) {
-        this.name = name;
+        this.name2 = name;
         this.lastName = lastName;
         this.age = age;
         this.birthday = birthday;
@@ -33,8 +35,8 @@ public class Dog extends WormObject {
     public Dog() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName2(String name2) {
+        this.name2 = name2;
     }
 
     public void setLastName(String lastName) {

@@ -19,6 +19,11 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
     private final String WHERE = "WHERE";
     private final String SET = "SET";
     private final String AND = "AND";
+    private final String NULL = "NULL";
+    private final String PRIMARY_KEY = "PRIMARY KEY";
+    private final String INT = "INT";
+    private final String NOT = "NOT";
+    private final String AUTO_INCREMENT = "AUTO_INCREMENT";
 
 
 
@@ -47,17 +52,33 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
             .append(" (")
             .append(attributesNames[0].getValue())
             .append(" ")
-            .append("INT NOT NULL AUTO_INCREMENT, ");
+            .append(INT)
+            .append(" ")
+            .append(NOT)
+            .append(" ")
+            .append(NULL)
+            .append(" ")
+            .append(AUTO_INCREMENT)
+            .append(",");
 
         for(int i=1;i<attributesNames.length;i++){
             query
                 .append(attributesNames[i].getValue())
                 .append(" ")
-                .append("TEXT NULL")
+                .append(attributesNames[i].getDatabaseType())
+                .append(" ")
+                .append(NULL)
                 .append(",");
         }
 
-        query.append("");
+        query
+            .append(PRIMARY_KEY)
+            .append(" (")
+            .append(attributesNames[0].getValue())
+            .append(")")
+            .append(");");
+
+
 
         return query.toString();
     }

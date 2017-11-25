@@ -1,10 +1,10 @@
 package persistence;
 
 import domain.FieldWormType;
+import domain.WormConfig;
 import persistence.contracts.DBExecuteQuery;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DBValidator implements persistence.contracts.DBValidator{
 
@@ -32,7 +32,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
         ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existRow(tableName,idFieldName,id));
 
         try {
-            if(resultSet.next()){
+            if(resultSet != null && resultSet.next()){
                 return true;
             }
         } catch (SQLException e) {
@@ -68,5 +68,30 @@ public class DBValidator implements persistence.contracts.DBValidator{
                         dbName,
                         attributes
                 );
+    }
+
+    @Override
+    public boolean existDB(String DBName) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://" +
+                    WormConfig.newInstance().getHost() +
+                    "/?user=" +
+                    WormConfig.newInstance().getUser() +
+                    "&password=" +
+                    WormConfig.newInstance().getPassword());
+
+            Statement s = conn.createStatement();
+            ResultSet resultSet = s.executeQuery(new QueryBuilder().existDB(DBName));
+
+            if(resultSet != null)
+                return resultSet.first();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }

@@ -11,9 +11,9 @@ import java.util.Date;
 
 public class DummyTests {
     private static final String HOST = "localhost";
-    private static final String PORT = "";
+    private static final String PORT = "3306";
     private static final String DATABASE = "wormDB";
-    private static final String USER = "";
+    private static final String USER = "root";
     private static final String PASSW = "";
 
 
@@ -22,9 +22,9 @@ public class DummyTests {
         //tryReflexion();
         //tryQueryBuilder();
         //tryWormConfig();
-        //trySave();
+        trySave();
         //tryGet();
-        tryGetAll();
+        //tryGetAll();
     }
 
     private static void tryGetAll() {

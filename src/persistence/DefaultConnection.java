@@ -1,10 +1,13 @@
 package persistence;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
+import domain.WormConfig;
 import persistence.contracts.PoolConnections;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class DefaultConnection implements PoolConnections {
     private final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -30,11 +33,9 @@ public class DefaultConnection implements PoolConnections {
         try {
             Class.forName(JDBC_DRIVER);
             return DriverManager.getConnection(DATABASE_URL, USER, PASSW);
-        }
-        catch (ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
-        }
-        catch (SQLException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;

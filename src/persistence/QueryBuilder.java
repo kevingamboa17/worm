@@ -316,4 +316,28 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
 
         return query.toString();
     }
+
+    @Override
+    public String existDB(String dataBaseName) {
+        StringBuilder query = new StringBuilder("");
+
+        query
+                .append(SELECT)
+                .append(" ")
+                .append("SCHEMA_NAME")
+                .append(" ")
+                .append(FROM)
+                .append(" ")
+                .append("INFORMATION_SCHEMA.SCHEMATA")
+                .append(" ")
+                .append(WHERE)
+                .append(" ")
+                .append("SCHEMA_NAME")
+                .append(" ")
+                .append("=")
+                .append(" ")
+                .append(dataBaseName);
+
+        return query.toString();
+    }
 }

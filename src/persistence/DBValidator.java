@@ -15,7 +15,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
     }
 
     private boolean validateTableExist(String DBName, String tableName) {
-        ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existTable(DBName, tableName));
+        ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existTable(DBName, tableName)).getResultSet();
 
         try {
             if(resultSet.next()){
@@ -29,7 +29,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
 
     @Override
     public boolean validateRowExist(String tableName, String idFieldName, int id) {
-        ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existRow(tableName,idFieldName,id));
+        ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existRow(tableName,idFieldName,id)).getResultSet();
 
         try {
             if(resultSet.next()){
@@ -42,7 +42,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
     }
 
     private boolean validateTableAttributes(String DBName, String tableName, FieldWormType[] attributesNames) {
-        ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().getTableFieldsNamesAndTypes(DBName, tableName));
+        ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().getTableFieldsNamesAndTypes(DBName, tableName)).getResultSet();
 
         int i=0;
         try {

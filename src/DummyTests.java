@@ -24,38 +24,41 @@ public class DummyTests {
         //tryReflexion();
         //tryQueryBuilder();
         //tryWormConfig();
-        trySave();
-        //tryGet();
+        //trySave();
+        tryGet();
         //tryGetAll();
     }
 
-    @Test
-    public void tryGetAll() {
-        new WormConfig("wormDB", HOST, PORT, USER, PASSW);
-        Dog[] dogs = WormObject.getAll(Dog.class);
 
-        assertEquals(numberOfObjectsInDb, dogs.length);
+    public static void tryGetAll() {
+        new WormConfig("wormDB", HOST, PORT, USER, PASSW);
+        //Dog[] dogs = WormObject.getAll(Dog.class);
+        Person[] person = WormObject.getAll(Person.class);
+        System.out.printf(person[0].getLastName());
     }
 
-    @Test
-    public void tryGet() {
+    public static void tryGet() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
+        //Person person = WormObject.findById(Person.class, 1);
         Dog dog = WormObject.findById(Dog.class, 1);
-        assertNotNull(dog);
+        System.out.printf(dog.lastName);
+        //assertNotNull(dog);
     }
 
-    @Test
-    public void trySave() {
+
+    public static void trySave() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
-        Dog[] dogsBefore = WormObject.getAll(Dog.class);
-        numberOfObjectsInDb = dogsBefore.length;
+        Person person = new Person("Marco","Chavez",20);
+        person.save();
+        //Dog[] dogsBefore = WormObject.getAll(Dog.class);
+        //numberOfObjectsInDb = dogsBefore.length;
 
-        Dog dog1 = new Dog("Marco", "Chavez", 20, new Date());
-        dog1.save();
-        Dog[] dogsAfter = WormObject.getAll(Dog.class);
+        //Dog dog1 = new Dog("Marco", "Chavez", 20, new Date());
+        //dog1.save();
+        //Dog[] dogsAfter = WormObject.getAll(Dog.class);
 
-        assertEquals(numberOfObjectsInDb + 1, dogsAfter.length);
-        numberOfObjectsInDb++;
+        //assertEquals(numberOfObjectsInDb + 1, dogsAfter.length);
+        //numberOfObjectsInDb++;
     }
 
     @Test

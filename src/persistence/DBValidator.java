@@ -17,7 +17,6 @@ public class DBValidator implements persistence.contracts.DBValidator{
     @Override
     public boolean validateTableExist(String DBName, String tableName) {
         ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existTable(DBName, tableName)).getResultSet();
-
         try {
             if(resultSet.next()){
                 return true;

@@ -132,6 +132,8 @@ public class TypeMatcher {
                 return "date";
             case  "java.sql.Time":
                 return "time";
+            case "java.util.Date":
+                return "date";
             default:
                 return "text";
         }

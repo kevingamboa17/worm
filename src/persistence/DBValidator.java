@@ -39,7 +39,6 @@ public class DBValidator implements persistence.contracts.DBValidator{
                 return true;
             }
         } catch (SQLException e) {
-            System.out.printf(e.getMessage());
             e.printStackTrace();
         }
         return false;
@@ -95,9 +94,9 @@ public class DBValidator implements persistence.contracts.DBValidator{
 
 
         } catch (ClassNotFoundException e) {
-            System.out.printf(e.getMessage());
+            e.printStackTrace();
         } catch (SQLException e) {
-            System.out.printf(e.getMessage());
+            e.printStackTrace();
         }
 
         return false;

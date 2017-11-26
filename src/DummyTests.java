@@ -25,40 +25,37 @@ public class DummyTests {
         //tryQueryBuilder();
         //tryWormConfig();
         //trySave();
-        tryGet();
+        //tryGet();
         //tryGetAll();
     }
 
-
-    public static void tryGetAll() {
+    @Test
+    public void tryGetAll() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
-        //Dog[] dogs = WormObject.getAll(Dog.class);
-        Person[] person = WormObject.getAll(Person.class);
-        System.out.printf(person[0].getLastName());
+        Dog[] dogs = WormObject.getAll(Dog.class);
+
+        assertEquals(numberOfObjectsInDb, dogs.length);
     }
 
-    public static void tryGet() {
+    @Test
+    public void tryGet() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
-        //Person person = WormObject.findById(Person.class, 1);
         Dog dog = WormObject.findById(Dog.class, 1);
-        System.out.printf(dog.lastName);
-        //assertNotNull(dog);
+        assertNotNull(dog);
     }
 
-
-    public static void trySave() {
+    @Test
+    public void trySave() {
         new WormConfig("wormDB", HOST, PORT, USER, PASSW);
-        Person person = new Person("Marco","Chavez",20);
-        person.save();
-        //Dog[] dogsBefore = WormObject.getAll(Dog.class);
-        //numberOfObjectsInDb = dogsBefore.length;
+        Dog[] dogsBefore = WormObject.getAll(Dog.class);
+        numberOfObjectsInDb = dogsBefore.length;
 
-        //Dog dog1 = new Dog("Marco", "Chavez", 20, new Date());
-        //dog1.save();
-        //Dog[] dogsAfter = WormObject.getAll(Dog.class);
+        Dog dog1 = new Dog("Marco", "Chavez", 20, new Date());
+        dog1.save();
+        Dog[] dogsAfter = WormObject.getAll(Dog.class);
 
-        //assertEquals(numberOfObjectsInDb + 1, dogsAfter.length);
-        //numberOfObjectsInDb++;
+        assertEquals(numberOfObjectsInDb + 1, dogsAfter.length);
+        numberOfObjectsInDb++;
     }
 
     @Test

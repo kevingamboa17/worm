@@ -76,18 +76,18 @@ public class DBManager implements persistence.contracts.DBManager {
                if (isDBValid && rowExist) {
                    update(tableName, values);
                } else if (isDBValid){
-                   create(tableName, values);
+                   insertEntity(tableName, values);
                }
                
            } else{
                createTable(tableName, values);
-               create(tableName, values);
+               insertEntity(tableName, values);
            }
 
         } else{
             createDB(WormConfig.newInstance().getDbName());
             createTable(tableName, values);
-            create(tableName, values);
+            insertEntity(tableName, values);
         }
 
 
@@ -101,7 +101,7 @@ public class DBManager implements persistence.contracts.DBManager {
     }
 
     @Override
-    public void create(String tableName, FieldWormType[] values) {
+    public void insertEntity(String tableName, FieldWormType[] values) {
         dbExecuteQuery.executeModificationQuery(
                 queryBuilder.insertEntity(tableName, values)
         );

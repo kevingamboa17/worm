@@ -50,7 +50,7 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
             .append(" TABLE ")
             .append(tableName)
             .append(" (")
-            .append(attributesNames[0].getValue())
+            .append(getColumnName(attributesNames[0]))
             .append(" ")
             .append(INT)
             .append(" ")
@@ -63,7 +63,7 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
 
         for(int i=1;i<attributesNames.length;i++){
             query
-                .append(attributesNames[i].getValue())
+                .append(getColumnName(attributesNames[i]))
                 .append(" ")
                 .append(attributesNames[i].getDatabaseType())
                 .append(" ")
@@ -74,7 +74,7 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         query
             .append(PRIMARY_KEY)
             .append(" (")
-            .append(attributesNames[0].getValue())
+            .append(getColumnName(attributesNames[0]))
             .append(")")
             .append(");");
 
@@ -377,7 +377,9 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
                 .append(" ")
                 .append("=")
                 .append(" ")
-                .append(dataBaseName);
+                .append("'")
+                .append(dataBaseName)
+                .append("'");
 
         return query.toString();
     }

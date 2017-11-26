@@ -24,7 +24,7 @@ public class DummyTests {
         //tryReflexion();
         //tryQueryBuilder();
         //tryWormConfig();
-        trySave();
+        //trySave();
         //tryGet();
         //tryGetAll();
     }

@@ -14,9 +14,9 @@ public class DBValidator implements persistence.contracts.DBValidator{
         this.dbExecuteQuery = dbExecuteQuery;
     }
 
-    private boolean validateTableExist(String DBName, String tableName) {
+    @Override
+    public boolean validateTableExist(String DBName, String tableName) {
         ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existTable(DBName, tableName)).getResultSet();
-
         try {
             if(resultSet.next()){
                 return true;
@@ -32,7 +32,10 @@ public class DBValidator implements persistence.contracts.DBValidator{
         ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existRow(tableName,idFieldName,id)).getResultSet();
 
         try {
-            if(resultSet != null && resultSet.next()){
+            if(resultSet == null)
+                return false;
+
+            if(resultSet.next()){
                 return true;
             }
         } catch (SQLException e) {
@@ -72,20 +75,24 @@ public class DBValidator implements persistence.contracts.DBValidator{
 
     @Override
     public boolean existDB(String DBName) {
+        String host = WormConfig.newInstance().getHost();
+        String port = WormConfig.newInstance().getPort();
+        String user = WormConfig.newInstance().getUser();
+        String password = WormConfig.newInstance().getPassword();
+
+        String url = "jdbc:mysql://" + host + ":" + port + "?useSSL=false";
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://" +
-                    WormConfig.newInstance().getHost() +
-                    "/?user=" +
-                    WormConfig.newInstance().getUser() +
-                    "&password=" +
-                    WormConfig.newInstance().getPassword());
+            Connection conn = DriverManager.getConnection(url, user, password);
 
             Statement s = conn.createStatement();
             ResultSet resultSet = s.executeQuery(new QueryBuilder().existDB(DBName));
 
             if(resultSet != null)
                 return resultSet.first();
+
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

@@ -377,7 +377,9 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
                 .append(" ")
                 .append("=")
                 .append(" ")
-                .append(dataBaseName);
+                .append("'")
+                .append(dataBaseName)
+                .append("'");
 
         return query.toString();
     }

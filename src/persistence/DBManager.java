@@ -67,16 +67,24 @@ public class DBManager implements persistence.contracts.DBManager {
         boolean existDB = dbValidator.existDB(WormConfig.newInstance().getDbName());
 
        if(existDB){
-           boolean isDBValid = dbValidator.isDBValid(dbName, tableName, values);
-           boolean rowExist = dbValidator.validateRowExist(tableName, values[0].getFieldName(), (int)values[0].getValue());
+           boolean tableExist = dbValidator.validateTableExist(WormConfig.newInstance().getDbName(), tableName);
 
-           if (isDBValid && rowExist) {
-               update(tableName, values);
-           } else if (isDBValid){
+           if(tableExist){
+               boolean isDBValid = dbValidator.isDBValid(dbName, tableName, values);
+               boolean rowExist = dbValidator.validateRowExist(tableName, values[0].getFieldName(), (int)values[0].getValue());
+
+               if (isDBValid && rowExist) {
+                   update(tableName, values);
+               } else if (isDBValid){
+                   create(tableName, values);
+               }
+               
+           } else{
+               createTable(tableName, values);
                create(tableName, values);
            }
-        }
-        else{
+
+        } else{
             createDB(WormConfig.newInstance().getDbName());
             createTable(tableName, values);
             create(tableName, values);

@@ -10,15 +10,37 @@ import persistence.contracts.DBValidator;
 
 import java.sql.*;
 
+/**
+ * The {@code DBManager} class is responsible of delegate requests to database,
+ * - It validates all incoming requests to set and get data, through its <code>DBValidator</code>.
+ * - Request connections to <code>DBConnection</code>
+ * - Build and do queries through <code>QueryBuilder</code> and <code>DBExecuteQuery</code> classes.
+ */
 public class DBManager implements persistence.contracts.DBManager {
+
+    /** The database validator */
     private final DBValidator dbValidator;
+
+    /** The object that execute already built queries */
     private final DBExecuteQuery dbExecuteQuery;
+
+    /** The object that provides connections with the database */
     private final DBConnection dbConnection;
+
+    /** The object that build the basic CRUD queries */
     private final QueryBuilder queryBuilder;
+
+    /** The database name */
     private final String dbName;
+
+    /** The object that match types of data between database and Java objects */
     private final TypeMatcher typeMatcher;
 
-
+    /**
+     * Initializes a newly created {@code DBManager} object that is responsible
+     * of delegates requests to get access into database, including database validations,
+     * database connections, and queries creation.
+     */
     public DBManager() {
         WormConfig wormConfig = WormConfig.newInstance();
         this.dbName = wormConfig.getDbName();
@@ -41,6 +63,10 @@ public class DBManager implements persistence.contracts.DBManager {
         typeMatcher = new TypeMatcher();
     }
 
+    /**
+     * Creates a new database with a defined name.
+     * @param DBName The database's name.
+     */
     @Override
     public void createDB(String DBName) {
         try {
@@ -62,6 +88,16 @@ public class DBManager implements persistence.contracts.DBManager {
         }
     }
 
+    /**
+     * Saves an entity into database, calling to <code>DBValidator</code> before,
+     * to assure the data consistence. If the database not exist, then <code>DBManager</code>
+     * has to create it. Also if the table object not exist, then DBManager has the responsibility
+     * of create it.
+     *
+     * @param tableName The table's name of database.
+     * @param values    A <code>FieldWormType</code> array that has all fields of the entity that
+     *                  is going to be saved into database.
+     */
     @Override
     public void save(String tableName, FieldWormType[] values) {
         boolean existDB = dbValidator.existDB(WormConfig.newInstance().getDbName());
@@ -93,6 +129,12 @@ public class DBManager implements persistence.contracts.DBManager {
 
     }
 
+    /**
+     * Updates an specific entity that is saved into database.
+     * @param tableName The table's name where the entity exists.
+     * @param values    A <code>FieldWormType</code> array that has all fields of the entity that
+     *                  is going to be updated into database.
+     */
     @Override
     public void update(String tableName, FieldWormType[] values) {
         dbExecuteQuery.executeModificationQuery(
@@ -100,6 +142,12 @@ public class DBManager implements persistence.contracts.DBManager {
         );
     }
 
+    /**
+     * Insert a new entity into database.
+     * @param tableName The table's name where the entity is going to be created.
+     * @param values    A <code>FieldWormType</code> array that has all fields of the entity that
+     *                  is going to be updated into database.
+     */
     @Override
     public void insertEntity(String tableName, FieldWormType[] values) {
         dbExecuteQuery.executeModificationQuery(
@@ -107,6 +155,12 @@ public class DBManager implements persistence.contracts.DBManager {
         );
     }
 
+    /**
+     * Creates a new table into database.
+     * @param tableName The tables's name.
+     * @param values    A <code>FieldWormType</code> array that represents the columns's names
+     *                  of the table that is going to be created.
+     */
     private void createTable(String tableName, FieldWormType[] values){
         try {
             Connection conn = dbConnection.getConnection();
@@ -119,6 +173,11 @@ public class DBManager implements persistence.contracts.DBManager {
     }
 
 
+    /**
+     * Deletes an specific entity using its ID like reference.
+     * @param tableName The table's name where the entity exists.
+     * @param id        The identifier of the entity that is going to be deleted.
+     */
     @Override
     public void delete(String tableName, int id) {
         // TODO: Correct this hardcoded name
@@ -129,6 +188,14 @@ public class DBManager implements persistence.contracts.DBManager {
         );
     }
 
+    /**
+     * Gets an <code>FieldWormType</code> array that represents the fields and its values
+     * of specific entity referenced through its ID.
+     * @param type      The class type of the entity.
+     * @param tableName The table's name where the entity exists.
+     * @param id        The identifier of the entity.
+     * @return          A <code>FieldWormType</code> array.
+     */
     @Override
     public FieldWormType[] getObject(Class type, String tableName, int id) {
         try {
@@ -154,6 +221,14 @@ public class DBManager implements persistence.contracts.DBManager {
         }
     }
 
+    /**
+     * Gets all entities of a specific type of <code>Class</code>.
+     * @param type          Type of class that represents the entities that are going to
+     *                      be returned.
+     * @param tableName     The table's name where the entities exist.
+     * @return              A matrix of <code>FieldWormType</code> objects that represent all fields
+     *                      and its values of every entity returned.
+     */
     @Override
     public FieldWormType[][] getAll(Class type, String tableName) {
         try {

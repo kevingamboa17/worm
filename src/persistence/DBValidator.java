@@ -6,14 +6,29 @@ import persistence.contracts.DBExecuteQuery;
 
 import java.sql.*;
 
+/**
+ * The BDValidator class is responsible for performing
+ * validations that allow or not perform other tasks.
+ */
 public class DBValidator implements persistence.contracts.DBValidator{
 
+    /** The object that execute a determinate query */
     private persistence.contracts.DBExecuteQuery dbExecuteQuery;
 
+    /**
+     * Initializes a newly created {@code DBValidator} object with the DBExecuteQuery required
+     * @param dbExecuteQuery a instance of DBExecuteQuery that execute the queries
+     */
     public  DBValidator(DBExecuteQuery dbExecuteQuery){
         this.dbExecuteQuery = dbExecuteQuery;
     }
 
+    /**
+     * Method that validate and return a boolean if a determined table exist in a database
+     * @param DBName name of database where research the table
+     * @param tableName table name that need be find
+     * @return a boolean if the table specified exist in the database
+     */
     @Override
     public boolean validateTableExist(String DBName, String tableName) {
         ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existTable(DBName, tableName)).getResultSet();
@@ -27,6 +42,13 @@ public class DBValidator implements persistence.contracts.DBValidator{
         return false;
     }
 
+    /**
+     * Method that validate and return a boolean if a determined row exist in a table
+     * @param tableName table name where research a row
+     * @param idFieldName column name where is the id in the table
+     * @param id number id of the row that need to find
+     * @return a boolean if the row specified exist in the table
+     */
     @Override
     public boolean validateRowExist(String tableName, String idFieldName, int id) {
         ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().existRow(tableName,idFieldName,id)).getResultSet();
@@ -44,6 +66,14 @@ public class DBValidator implements persistence.contracts.DBValidator{
         return false;
     }
 
+    /**
+     * Method that validate if the names and types of the table in database are equals to the name
+     * and types of the object
+     * @param DBName name of the database where are the table
+     * @param tableName name of the table to compare
+     * @param attributesNames attributes of the object
+     * @return a boolean if the names and types are equals
+     */
     private boolean validateTableAttributes(String DBName, String tableName, FieldWormType[] attributesNames) {
         ResultSet resultSet = dbExecuteQuery.executeSelectQuery(new QueryBuilder().getTableFieldsNamesAndTypes(DBName, tableName)).getResultSet();
 
@@ -63,6 +93,13 @@ public class DBValidator implements persistence.contracts.DBValidator{
         return true;
     }
 
+    /**
+     * Method that validate if the database is valid
+     * @param dbName name of the database that need to validate
+     * @param tableName table name that need validate
+     * @param attributes attributes of the object
+     * @return a boolean if the database is valid
+     */
     @Override
     public boolean isDBValid(String dbName, String tableName, FieldWormType[] attributes) {
         return  validateTableExist(dbName, tableName ) &&
@@ -73,6 +110,11 @@ public class DBValidator implements persistence.contracts.DBValidator{
                 );
     }
 
+    /**
+     * Method that if the database exist in the server
+     * @param DBName name of the database that need to be validated
+     * @return a boolean if the database exist in the server
+     */
     @Override
     public boolean existDB(String DBName) {
         String host = WormConfig.newInstance().getHost();

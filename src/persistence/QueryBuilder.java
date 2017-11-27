@@ -7,6 +7,10 @@ import java.lang.annotation.Annotation;
 import java.sql.Time;
 import java.util.Date;
 
+/**
+ * The QueryBuilder is a helper that its responsibility
+ * is generate the queries that do different task if they are executed
+ */
 public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, persistence.contracts.QueryBuilder.Validator {
 
     private final String CREATE = "CREATE";
@@ -25,8 +29,11 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
     private final String NOT = "NOT";
     private final String AUTO_INCREMENT = "AUTO_INCREMENT";
 
-
-
+    /**
+     * Method that build a query that create a database if is executed
+     * @param dataBaseName name of the database that will be created
+     * @return a sentence that will create a database
+     */
     @Override
     public String createDB(String dataBaseName) {
 
@@ -41,6 +48,12 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
 
     }
 
+    /**
+     * Method that build a query that create a table if is executed
+     * @param tableName name of the table that will be created
+     * @param attributesNames model data to create a table with its specifications
+     * @return a sentence that will create a table
+     */
     @Override
     public String createTable(String tableName, FieldWormType[] attributesNames) {
         StringBuilder query = new StringBuilder("");
@@ -83,8 +96,12 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
-
-
+    /**
+     * Method that build a query that insert a row in a specific table if is executed
+     * @param tableName name of the table where will insert a new row
+     * @param attributes model data that will be inserted into table
+     * @return a sentence that will insert a new row in a table
+     */
     @Override
     public String insertEntity(String tableName, FieldWormType[] attributes) {
         StringBuilder query = new StringBuilder("");
@@ -158,6 +175,12 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
+    /**
+     * Method that build a query that update the data of a row in a specific table if is executed
+     * @param tableName name of the table where will update a row existing
+     * @param attributes model data that will update a row existing
+     * @return a sentence that will update a row existing in a specific table
+     */
     @Override
     public String updateEntity(String tableName, FieldWormType[] attributes) {
         StringBuilder query = new StringBuilder("");
@@ -227,6 +250,13 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
+    /**
+     * Method that build a query that delete a row existing in a specific table if is executed
+     * @param tableName name of the table where will delete a row existing
+     * @param idFieldName column name of a table where is the id of the object
+     * @param id number id of the row that will be deleted
+     * @return a sentence that will delete a row existing in a specific table
+     */
     @Override
     public String deleteEntity(String tableName, String idFieldName, int id) {
 
@@ -251,6 +281,13 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
+    /**
+     * Method that build a query that return a row existing in a specific table if is executed
+     * @param tableName name of the table where will search a row
+     * @param idFieldName column name of a table where is the id of the object
+     * @param id number id of the row that want to retrieve
+     * @return a sentence that will return a row with the id specified
+     */
     @Override
     public String findEntity(String tableName, String idFieldName, int id) {
         StringBuilder query = new StringBuilder("");
@@ -273,6 +310,11 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
+    /**
+     * Method that build a query that return all row existing in a specific table if is executed
+     * @param tableName name of the table where will search all row
+     * @return a sentence that will return all row
+     */
     @Override
     public String allEntities(String tableName) {
         StringBuilder query = new StringBuilder("");
@@ -287,8 +329,12 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
-
-
+    /**
+     * Method that build a query that return the name and types of the columns of a specific table
+     * @param DBName name of the database where is the table
+     * @param tableName name of the table that need the names and types
+     * @return a sentence that will return the names and types of the columns of the table specified
+     */
     @Override
     public String getTableFieldsNamesAndTypes(String DBName, String tableName) {
         StringBuilder query = new StringBuilder("");
@@ -312,6 +358,12 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
+    /**
+     * Method that build a query that return a table of a specific database
+     * @param DBName name of the database where is the table
+     * @param tableName name of the table that need to search
+     * @return a sentence that will return a table specified
+     */
     @Override
     public String existTable(String DBName, String tableName) {
         StringBuilder query = new StringBuilder("");
@@ -336,6 +388,13 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
+    /**
+     * Method that build a query that return a row existing in a table
+     * @param tableName name of the table where will research
+     * @param idFieldName column name where is the id of the table
+     * @param id number id of the row that need find
+     * @return a sentence that will return a row specified
+     */
     @Override
     public String existRow(String tableName, String idFieldName, int id) {
         StringBuilder query = new StringBuilder("");
@@ -358,6 +417,11 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
         return query.toString();
     }
 
+    /**
+     * Method that build a query that return a specific database
+     * @param dataBaseName name of database that need find
+     * @return a sentence that will return a database specified
+     */
     @Override
     public String existDB(String dataBaseName) {
         StringBuilder query = new StringBuilder("");
@@ -383,7 +447,12 @@ public class QueryBuilder implements persistence.contracts.QueryBuilder.CRUD, pe
 
         return query.toString();
     }
-  
+
+    /**
+     * Method that return the column name, the name of the attribute model or the annotation wrote
+     * @param field attribute of the model
+     * @return the name of the column in table
+     */
     private String getColumnName(FieldWormType field) {
         Annotation annotation = field.getAnnotation();
         boolean hasWormTableAnnotation = annotation != null && annotation instanceof WormColumn;

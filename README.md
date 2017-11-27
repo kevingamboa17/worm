@@ -13,7 +13,7 @@ Import the WormLibrary.jar to your project
 
 ## 2. How does it help.
 
-It is intended to simplify the interaction with MySQL database in Java.
+Worm is intended to simplify the interaction with MySQL database in Java.
 
 * It eliminates writing SQL queries to interact with MySQL db.
 * It takes care of creating your database.
@@ -31,7 +31,10 @@ There are two parts to it:
 
 # Documentation
 
-Something
+[Complete Documentation](documentation/Documentation.md)
+
+[Example](documentation/Example.md)
+
 
 # Development
 

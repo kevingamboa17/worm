@@ -81,7 +81,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
         try {
             while(resultSet.next()){
                 boolean isNameMatch = resultSet.getString(1).compareTo(attributesNames[i].getFieldName()) == 0;
-                boolean isTypeMatch = resultSet.getString(2).compareTo(attributesNames[i].getOriginalType().getTypeName()) == 0;
+                boolean isTypeMatch = resultSet.getString(2).toLowerCase().compareTo(attributesNames[i].getDatabaseType().toLowerCase()) == 0;
                 if(!isNameMatch || !isTypeMatch){
                     return false;
                 }

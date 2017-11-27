@@ -1,9 +1,11 @@
 package persistence;
 
 import domain.FieldWormType;
+import domain.WormColumn;
 import domain.WormConfig;
 import persistence.contracts.DBExecuteQuery;
 
+import java.lang.annotation.Annotation;
 import java.sql.*;
 
 /**
@@ -80,7 +82,7 @@ public class DBValidator implements persistence.contracts.DBValidator{
         int i=0;
         try {
             while(resultSet.next()){
-                boolean isNameMatch = resultSet.getString(1).compareTo(attributesNames[i].getFieldName()) == 0;
+                boolean isNameMatch = resultSet.getString(1).compareTo(getColumnName(attributesNames[i])) == 0;
                 boolean isTypeMatch = resultSet.getString(2).toLowerCase().compareTo(attributesNames[i].getDatabaseType().toLowerCase()) == 0;
                 if(!isNameMatch || !isTypeMatch){
                     return false;
@@ -142,5 +144,19 @@ public class DBValidator implements persistence.contracts.DBValidator{
         }
 
         return false;
+    }
+
+    /**
+     * Method that return the column name, the name of the attribute model or the annotation wrote
+     * @param field attribute of the model
+     * @return the name of the column in table
+     */
+    private String getColumnName(FieldWormType field) {
+        Annotation annotation = field.getAnnotation();
+        boolean hasWormTableAnnotation = annotation != null && annotation instanceof WormColumn;
+        if (hasWormTableAnnotation) {
+            return ((WormColumn) annotation).value();
+        }
+        return field.getFieldName();
     }
 }

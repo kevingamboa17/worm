@@ -66,7 +66,7 @@ public class WormConfig {
 
     /**
      * Method that return the only one instance of {@code WormConfig} that have all the application
-     * @return
+     * @return a WormConfig object
      */
     public static WormConfig newInstance() {
         if (wormConfig == null) {

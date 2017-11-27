@@ -6,7 +6,7 @@ Insanely easy way to work with Java and MySQL
 
 ## 1. Download
 
-Download the library - [Worm-Library-1.0.jar](documentation/worm-library-1.0.jar) 
+Download the library - [Worm-Library-1.0.jar](documentation/worm-library-v1.0.1.jar) 
 ```
 Import the WormLibrary.jar to your project
 ```

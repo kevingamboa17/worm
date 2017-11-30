@@ -67,4 +67,8 @@ public class WormObject {
     public void setObjectID(int objectID) {
         this.objectID = objectID;
     }
+
+    protected int getObjectID() {
+        return objectID;
+    }
 }

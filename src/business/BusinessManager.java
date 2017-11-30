@@ -65,7 +65,7 @@ public class BusinessManager <GenericObject extends WormObject> implements busin
      */
     @Override
     public WormObject findById(Class type, int id) {
-        FieldWormType[] fieldWormTypes = this.mDBManager.getObject(type, type.getName(), id);
+        FieldWormType[] fieldWormTypes = this.mDBManager.getObject(type, type.getSimpleName(), id);
         return this.objectBuilder.buildObject(type, fieldWormTypes);
     }
 
@@ -80,7 +80,7 @@ public class BusinessManager <GenericObject extends WormObject> implements busin
     @Override
     public WormObject[] getAll(Class type) {
         WormObject[] wormObjects;
-        FieldWormType[][] fieldWormTypes = this.mDBManager.getAll(type, type.getName());
+        FieldWormType[][] fieldWormTypes = this.mDBManager.getAll(type, type.getSimpleName());
         wormObjects = new WormObject[fieldWormTypes.length];
 
         for(int i = 0; i < fieldWormTypes.length; i++){
@@ -97,7 +97,7 @@ public class BusinessManager <GenericObject extends WormObject> implements busin
      */
     public <T>T[] getAll2(Class<T> type) {
         T[] wormObjects;
-        FieldWormType[][] fieldWormTypes = this.mDBManager.getAll(type, type.getName());
+        FieldWormType[][] fieldWormTypes = this.mDBManager.getAll(type, type.getSimpleName());
         wormObjects = (T[])Array.newInstance(type, fieldWormTypes.length);
 
 

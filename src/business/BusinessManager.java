@@ -41,7 +41,7 @@ public class BusinessManager <GenericObject extends WormObject> implements busin
     @Override
     public void save(WormObject wormObject) {
         FieldWormType[] fieldWormTypes = this.typeMatcher.getFieldWormTypes(wormObject);
-        this.mDBManager.save(wormObject.getClass().getName(), fieldWormTypes);
+        this.mDBManager.save(wormObject.getClass().getSimpleName(), fieldWormTypes);
     }
 
 
@@ -53,7 +53,7 @@ public class BusinessManager <GenericObject extends WormObject> implements busin
      */
     @Override
     public void delete(WormObject wormObject, int id) {
-        this.mDBManager.delete(wormObject.getClass().getName(), id);
+        this.mDBManager.delete(wormObject.getClass().getSimpleName(), id);
     }
 
 
